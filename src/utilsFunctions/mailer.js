@@ -13,7 +13,7 @@ async function sendOtpEmail(to, code) {
   const from = process.env.FROM_EMAIL;
   const subject = "Code OTP - Vote Campus";
   const text = `Votre code de connexion est : ${code}\nIl expire dans 1H.`;
-  await transporter.sendMail({ from, to, subject, text });
+  //await transporter.sendMail({ from, to, subject, text });
 }
 
 module.exports = { sendOtpEmail };

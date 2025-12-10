@@ -69,7 +69,6 @@ const initDb = async (opts = {}) => {
       await sequelize.sync({ alter, force });
       console.log("✅ Models synchronized");
 
- 
     } else {
       console.log("ℹ️ sync skipped (use migrations in production)");
     }
