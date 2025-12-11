@@ -15,7 +15,7 @@ module.exports = (app) => {
    *  - Le backend vérifie et envoie un OTP
    */
 app.post("/api/v1/auth/request-otp", async (req, res) => {
-  const { email, matricule } = req.body;
+  let { email, matricule } = req.body;
 
   if (!email || !matricule) {
     return res.status(400).json({
@@ -24,9 +24,15 @@ app.post("/api/v1/auth/request-otp", async (req, res) => {
     });
   }
 
+  // 🧹 Nettoyage
+  const cleanEmail = String(email).trim().replace(/\s+/g, "").toLowerCase();
+  const cleanMatricule = String(matricule).trim().replace(/\s+/g, "");
+
   try {
-    // 🔍 On cherche l’étudiant UNIQUEMENT avec le matricule
-    const student = await Student.findOne({ where: { matricule } });
+    // Recherche par matricule nettoyé
+    const student = await Student.findOne({
+      where: { matricule: cleanMatricule },
+    });
 
     if (!student) {
       return res.status(404).json({
@@ -35,21 +41,21 @@ app.post("/api/v1/auth/request-otp", async (req, res) => {
       });
     }
 
-    // 🧠 Cas 1 : étudiant SANS email encore enregistré → première connexion
+    // Si l'étudiant n’a pas encore d’email → premier login
     if (!student.email) {
-      console.log("✨ Premier login de l’étudiant → enregistrement de l’email");
-      student.email = email;
+      student.email = cleanEmail;
       await student.save();
     }
-    // 🧠 Cas 2 : étudiant AVEC email enregistré → on doit vérifier que l’email correspond
-    else if (student.email.toLowerCase() !== email.toLowerCase()) {
+    // Sinon → vérifier la correspondance
+    else if (student.email.toLowerCase() !== cleanEmail) {
       return res.status(400).json({
         success: false,
-        message: "L'adresse email ne correspond pas à celle assigné à votre matricule.",
+        message:
+          "L'adresse email ne correspond pas à celle assignée à votre matricule.",
       });
     }
 
-    // Génération OTP — 6 chiffres
+    // Génération OTP
     const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
 
@@ -60,7 +66,7 @@ app.post("/api/v1/auth/request-otp", async (req, res) => {
       expires_at: expiresAt,
     });
 
-    // 📧 Envoi email
+    // Envoi email
     await sendOtpEmail(student.email, otpCode);
 
     return res.status(200).json({
