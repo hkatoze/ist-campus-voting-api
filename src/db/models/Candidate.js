@@ -9,7 +9,7 @@ module.exports = (sequelize) => {
     matricule: { type: DataTypes.STRING, unique: true, allowNull: false },
     nom: { type: DataTypes.STRING, allowNull: false },
     prenom: { type: DataTypes.STRING, allowNull: false },
-    programme: { type: DataTypes.STRING },
+    programme: { type: DataTypes.TEXT },
     photo_url: { type: DataTypes.STRING, allowNull: true },
     vote_count: { type: DataTypes.INTEGER, defaultValue: 0 },
   });
