@@ -1,7 +1,6 @@
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
- 
 
 async function sendOtpEmail(to, code) {
 
@@ -19,7 +18,7 @@ async function sendOtpEmail(to, code) {
     sgMail
       .send(msg)
       .then(() => {
-       console.log("Sengrid email sent:", result);
+       console.log("Sengrid email sent:");
       })
       .catch((error) => {
  console.error("Sengrid ERROR:", error.response?.body || error);
