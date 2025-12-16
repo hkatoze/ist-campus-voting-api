@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const db = require("../db/sequelize");
-const { Admin } = db.models;
+const { Admin, VoteWindow } = db.models;
 
 module.exports = (app) => {
   //S'inscrire
@@ -66,5 +66,86 @@ module.exports = (app) => {
         const message = `L'administrateur n'a pas pu se connecter. Reessayer dans quelques instants.`;
         res.status(500).json({ message, data: error });
       });
+  });
+
+  /**
+   * =====================================================
+   *  POST /api/v1/admin/vote-window
+   * =====================================================
+   *  - Définit l’intervalle de vote
+   */
+  app.post("/api/v1/admin/vote-window", async (req, res) => {
+    const { start_at, end_at } = req.body;
+
+    if (!start_at || !end_at) {
+      return res.status(400).json({
+        success: false,
+        message: "start_at et end_at sont requis.",
+      });
+    }
+
+    if (new Date(start_at) >= new Date(end_at)) {
+      return res.status(400).json({
+        success: false,
+        message: "La date de début doit être antérieure à la date de fin.",
+      });
+    }
+
+    try {
+      // Désactiver les anciennes fenêtres
+      await VoteWindow.update({ active: false }, { where: { active: true } });
+
+      const window = await VoteWindow.create({
+        start_at,
+        end_at,
+        active: true,
+      });
+
+      res.status(201).json({
+        success: true,
+        message: "Intervalle de vote défini avec succès.",
+        data: window,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "Erreur serveur lors de la définition de l’intervalle.",
+        data: error.message,
+      });
+    }
+  });
+
+  /**
+   * =====================================================
+   *  GET /api/v1/vote-window
+   * =====================================================
+   *  - Récupère la fenêtre active
+   */
+  app.get("/api/v1/admin/vote-window", async (req, res) => {
+    try {
+      const window = await VoteWindow.findOne({
+        where: { active: true },
+        order: [["createdAt", "DESC"]],
+      });
+
+      if (!window) {
+        return res.status(200).json({
+          success: true,
+          message: "Aucun intervalle de vote défini.",
+          data: null,
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        data: window,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "Erreur serveur.",
+        data: error.message,
+      });
+    }
   });
 };
