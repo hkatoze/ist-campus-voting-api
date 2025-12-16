@@ -19,7 +19,9 @@ app.use((req, res, next) => {
   next();
 });
 initDb();
+const voteTimeGuard = require("./src/middlewares/voteTimeGuard");
 
+app.use(voteTimeGuard);
 /* ........All routes list........... */
 require("./src/routes/adminEndpoints")(app);
 require("./src/routes/authenticateEndpoints")(app);

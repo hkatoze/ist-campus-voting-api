@@ -17,6 +17,8 @@ module.exports = (app) => {
 app.post("/api/v1/auth/request-otp", async (req, res) => {
   let { email, matricule } = req.body;
 
+
+
   if (!email || !matricule) {
     return res.status(400).json({
       success: false,
