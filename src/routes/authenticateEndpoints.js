@@ -75,11 +75,18 @@ app.post("/api/v1/auth/request-otp", async (req, res) => {
     });
   } catch (error) {
     console.error("Erreur /auth/request-otp :", error);
-    return res.status(500).json({
-      success: false,
-      message: "Erreur serveur lors de l’envoi du code OTP.",
-      data: error.message,
-    });
+    if (error.message == "email must be unique"){
+      return res.status(400).json({
+        success: false,
+        message:
+          "L'adresse email ne correspond pas à celle assignée à votre matricule.",
+      });
+    }
+      return res.status(500).json({
+        success: false,
+        message: "Erreur serveur lors de l’envoi du code OTP.",
+        data: error.message,
+      });
   }
 });
 
