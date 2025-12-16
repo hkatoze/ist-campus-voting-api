@@ -8,7 +8,7 @@ module.exports = function voteTimeGuard(req, res, next) {
   const endMinutes = 14 * 60 + 30; // 14:30 → 870
 
   if (currentMinutes < startMinutes || currentMinutes > endMinutes) {
-    return res.status(200).json({
+    return res.status(404).json({
       success: true,
       message: "Les votes sont terminés",
     });
