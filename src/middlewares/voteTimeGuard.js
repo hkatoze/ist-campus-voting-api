@@ -14,5 +14,5 @@ module.exports = function voteTimeGuard(req, res, next) {
     });
   }
 
-  next();
+  //next();
 };
