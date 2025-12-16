@@ -9,7 +9,7 @@ module.exports = function voteTimeGuard(req, res, next) {
 
   if (currentMinutes < startMinutes || currentMinutes > endMinutes) {
     return res.status(404).json({
-      success: true,
+      success: false,
       message: "Les votes sont terminés",
     });
   }
