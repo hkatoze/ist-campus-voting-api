@@ -1,6 +1,9 @@
 // src/middlewares/voteTimeGuard.js
 module.exports = function voteTimeGuard(req, res, next) {
-  const now = new Date();
+const now = new Date(
+  new Date().toLocaleString("en-US", { timeZone: "Africa/Ouagadougou" })
+);
+
 
   const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
