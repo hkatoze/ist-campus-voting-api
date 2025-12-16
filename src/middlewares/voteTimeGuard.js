@@ -11,14 +11,14 @@ const now = new Date(
 
   // ⏳ AVANT les votes
   if (currentMinutes < startMinutes) {
-    return res.status(200).json({
+    return res.status(404).json({
       success: false,
       message: "Les votes commencent à 12H, veuillez patienter",
     });
   }
   // ❌ APRÈS les votes
   if (currentMinutes > endMinutes) {
-    return res.status(200).json({
+    return res.status(404).json({
       success: false,
       message: "Les votes sont terminés",
     });
