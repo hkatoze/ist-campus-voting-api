@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 initDb();
 const voteTimeGuard = require("./src/middlewares/voteTimeGuard");
 
-//app.use(voteTimeGuard);
+
 /* ........All routes list........... */
 require("./src/routes/adminEndpoints")(app);
 require("./src/routes/authenticateEndpoints")(app);
@@ -29,6 +29,8 @@ require("./src/routes/candidateEndpoints")(app);
 require("./src/routes/resultsEndpoints")(app);
 require("./src/routes/voteEndpoints")(app);
 
+app.use(voteTimeGuard);
+require("./src/routes/sendVoteEnpoint")(app);
 
 //404 error managment
 app.use(({ res }) => {

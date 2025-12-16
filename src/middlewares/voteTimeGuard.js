@@ -4,15 +4,25 @@ module.exports = function voteTimeGuard(req, res, next) {
 
   const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
-  const startMinutes = 12 * 60; // 12:00 → 720
-  const endMinutes = 14 * 60 + 30; // 14:30 → 870
+  const startMinutes = 12 * 60; // 12:00
+  const endMinutes = 14 * 60 + 30; // 14:30
 
-  if (currentMinutes < startMinutes || currentMinutes > endMinutes) {
-    return res.status(404).json({
+  // ⏳ AVANT les votes
+  if (currentMinutes < startMinutes) {
+    return res.status(200).json({
+      success: false,
+      message: "Les votes commencent à 12H, veuillez patienter",
+    });
+  }
+
+  // ❌ APRÈS les votes
+  if (currentMinutes > endMinutes) {
+    return res.status(200).json({
       success: false,
       message: "Les votes sont terminés",
     });
   }
 
-  //next();
+  // ✅ PENDANT les votes
+  next();
 };
