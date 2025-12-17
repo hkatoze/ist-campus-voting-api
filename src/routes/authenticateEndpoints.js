@@ -69,11 +69,11 @@ app.post("/api/v1/auth/request-otp", async (req, res) => {
     });
 
     // Envoi email
-    await sendOtpEmail(student.email, otpCode);
+   // await sendOtpEmail(student.email, otpCode);
 
     return res.status(200).json({
       success: true,
-      message: "OTP envoyé avec succès.",
+      message: "Connexion réussie!.",
     });
   } catch (error) {
     console.error("Erreur /auth/request-otp :", error);
