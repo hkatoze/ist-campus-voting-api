@@ -75,15 +75,14 @@ app.post("/api/v1/auth/request-otp", async (req, res) => {
       success: true,
       message: "Connexion réussie.",
       data: {
-        token,
-        student: {
+     
+       
           id: student.id,
           matricule: student.matricule,
           email: cleanEmail,
           nom: student.nom,
           prenom: student.prenom,
-          filiere: student.filiere,
-        },
+       
       },
     });
   } catch (error) {
