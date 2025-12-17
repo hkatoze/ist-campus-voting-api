@@ -73,7 +73,18 @@ app.post("/api/v1/auth/request-otp", async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Connexion réussie!.",
+      message: "Connexion réussie.",
+      data: {
+        token,
+        student: {
+          id: student.id,
+          matricule: student.matricule,
+          email: cleanEmail,
+          nom: student.nom,
+          prenom: student.prenom,
+          filiere: student.filiere,
+        },
+      },
     });
   } catch (error) {
     console.error("Erreur /auth/request-otp :", error);
