@@ -58,7 +58,7 @@ app.post("/api/v1/auth/request-otp", async (req, res) => {
     }
 
     // Génération OTP
-    const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+   /*  const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
 
     await Otp.create({
@@ -67,7 +67,7 @@ app.post("/api/v1/auth/request-otp", async (req, res) => {
       used: false,
       expires_at: expiresAt,
     });
-
+ */
     // Envoi email
    // await sendOtpEmail(student.email, otpCode);
 
