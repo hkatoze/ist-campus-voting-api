@@ -7,7 +7,7 @@ const now = new Date(
   const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
   const startMinutes = 12 * 60; // 12:00
-  const endMinutes = 17 * 60; // 14:30
+  const endMinutes = 17 * 60 + 15; // 14:30
 
   // ⏳ AVANT les votes
   if (currentMinutes < startMinutes) {
