@@ -6,14 +6,14 @@ const now = new Date(
 
   const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
-  const startMinutes = 12 * 60; // 12:00
-  const endMinutes = 18 * 60; // 14:30
+  const startMinutes = 18 * 60; // 12:00
+  const endMinutes = 21 * 60; // 14:30
 
   // ⏳ AVANT les votes
   if (currentMinutes < startMinutes) {
     return res.status(404).json({
       success: false,
-      message: "Les votes commencent à 12H, veuillez patienter",
+      message: "Les votes sont terminés",
     });
   }
   // ❌ APRÈS les votes
