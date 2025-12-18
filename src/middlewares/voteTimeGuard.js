@@ -8,8 +8,11 @@ const now = new Date(
 
   const startMinutes = 14 * 60; // 12:00
   const endMinutes = 12 * 60; // 14:30
-
-  // ⏳ AVANT les votes
+return res.status(404).json({
+  success: false,
+  message: "Les votes sont terminés",
+});
+  /* // ⏳ AVANT les votes
   if (currentMinutes < startMinutes) {
     return res.status(404).json({
       success: false,
@@ -22,8 +25,11 @@ const now = new Date(
       success: false,
       message: "Les votes sont terminés",
     });
-  }
+  } */
 
   // ✅ PENDANT les votes
-  next();
+ // next();
+
+
+
 };
